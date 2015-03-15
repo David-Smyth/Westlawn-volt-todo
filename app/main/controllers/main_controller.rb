@@ -1,11 +1,32 @@
 # By default Volt generates this controller for your Main component
 class MainController < Volt::ModelController
+
+  # A Volt::ModelController can have a model assigned to it, and
+  # that model has a bunch of behaviors. We want to store our controller's
+  # information into a database, so we will import a ":store" type of model,
+  # which means our controller will import a bunch of methods to implement
+  # this type of model's responsibilities.
+  model :store
+
   def index
     # Add code for when the index view is loaded
   end
 
   def about
     # Add code for when the about view is loaded
+  end
+
+  def add_todo
+    _todos << { name: page._new_todo }
+    page._new_todo = ''
+  end
+
+  def current_todo
+    _todos[params._index.or(0).to_i]
+  end
+
+  def remove_todo(todo)
+    _todos.delete(todo)
   end
 
   private

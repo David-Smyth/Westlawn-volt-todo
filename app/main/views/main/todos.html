@@ -1,0 +1,45 @@
+<:Title>
+  Todo
+
+<:Body>
+  <div class="row">
+    <div class="col-md-4">
+
+      <h1>Todo List</h1>
+
+      <table class="todo-table">
+        {{ if _todos.empty? }}
+        <tr>
+          <td>... nothing to do ...</td>
+        </tr>
+        {{ else }}
+        {{ _todos.each do |todo| }}
+        <!-- Use params to store the current index -->
+        <tr 
+          e-click="params._index = index"
+          class="{{ if params._index.or(0).to_i == index }}selected{{ end }}"
+          >
+          <td><input type="checkbox" checked="{{ todo._completed }}" /></td>
+          <td class="{{ if todo._completed }}complete{{ end }}">{{ todo._name }}</td>
+          <td><button e-click="remove_todo(todo)">X</button></td>
+        </tr>
+        {{ end }}
+        {{ end }}
+      </table>
+    
+      <form e-submit="add_todo" role="form">
+        <div class="form-group">
+          <label>ToDo</label>
+          <input class="form-control" type="text" value="{{ page._new_todo }}" />
+        </div>
+      </form>
+
+      <!-- Display extra info -->
+      <div class="col-md-8">
+        {{ if current_todo }}
+        <h2>{{ current_todo._name }}</h2>
+
+        <textarea>{{ current_todo._description }}</textarea>
+        {{ end }}
+      </div>
+    </div>
